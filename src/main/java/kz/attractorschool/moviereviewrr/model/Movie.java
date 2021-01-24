@@ -24,9 +24,11 @@ public class Movie {
     private static final Random r = new Random();
 
     @Id
+    @Indexed
     @Builder.Default
     private String id = UUID.randomUUID().toString();
 
+    @Indexed
     private String title;
     private String poster;
     private int releaseYear;
@@ -39,6 +41,7 @@ public class Movie {
 
     // I think rating should be calculated upon adding a review and updated in the document
     // think service layer or even better move to separate consumer to calculate and update (queues)
+    @Indexed
     private double rating;
 
     public static Movie random() {
