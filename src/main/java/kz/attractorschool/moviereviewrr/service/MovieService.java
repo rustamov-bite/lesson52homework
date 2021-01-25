@@ -3,9 +3,12 @@ package kz.attractorschool.moviereviewrr.service;
 import kz.attractorschool.moviereviewrr.model.Movie;
 import kz.attractorschool.moviereviewrr.repository.MovieRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,45 +20,35 @@ public class MovieService {
         return movieRepository.findMovieById(id);
     }
 
-    public List<Movie> findByName(String title) {
-        List<Movie> movieList = new ArrayList<>();
-        for (Movie m : movieRepository.findAll()) {
-            if (m.getTitle().contains(title)) {
-                movieList.add(m);
-            }
-        }
-        return movieList;
+    public Movie findByName(String title) {
+        return movieRepository.findMovieByTitle(title);
     }
 
     public List<Movie> findByYear(int year) {
-        List<Movie> movieList = new ArrayList<>();
-        for (Movie m : movieRepository.findAll()) {
-            if (m.getReleaseYear() == year) {
-                movieList.add(m);
-            }
-        }
-        return movieList;
+        return movieRepository.findMoviesByReleaseYear(year);
     }
 
     public List<Movie> findByActor(String actor) {
-        List<Movie> movieList = new ArrayList<>();
-        for (Movie m : movieRepository.findAll()) {
-            for (String a : m.getActors()) {
-                if (a.equals(actor)) {
-                    movieList.add(m);
-                }
-            }
-        }
-        return movieList;
+        return movieRepository.findMoviesByActorsContaining(actor);
     }
 
     public List<Movie> findByStar(int star) {
-        List<Movie> movieList = new ArrayList<>();
-        for (Movie m : movieRepository.findAll()) {
-            if (m.getRating() == star) {
-                movieList.add(m);
-            }
-        }
-        return movieList;
+        return movieRepository.findMoviesByRating(star);
+    }
+
+    public Page<Movie> sortByName() {
+        Sort sort = Sort.by(Sort.Order.asc("name"));
+        int page = 1;
+        int size = 3;
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return movieRepository.findAll(pageable);
+    }
+
+    public Page<Movie> sortingByRating() {
+        Sort sort = Sort.by(Sort.Order.desc("star"));
+        int page = 1;
+        int size = 3;
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return movieRepository.findAll(pageable);
     }
 }

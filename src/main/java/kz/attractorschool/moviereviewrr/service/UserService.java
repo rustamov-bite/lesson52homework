@@ -21,52 +21,10 @@ public class UserService {
     }
 
     public User findUserByEmail(String email) {
-        boolean found = false;
-        User tmpUser = new User();
-        for (User u : userRepository.findAll()) {
-            if (u.getEmail().equals(email)) {
-                found = true;
-                tmpUser = u;
-                break;
-            }
-        }
-        if (found) {
-            return tmpUser;
-        } else {
-            throw new IllegalArgumentException();
-        }
+        return userRepository.findUserByEmail(email);
     }
 
     public User findUserByName(String name) {
-        boolean found = false;
-        User tmpUser = new User();
-        for (User u : userRepository.findAll()) {
-            if (u.getName().toLowerCase().equals(name.toLowerCase())) {
-                found = true;
-                tmpUser = u;
-                break;
-            }
-        }
-        if (found) {
-            return tmpUser;
-        } else {
-            throw new IllegalArgumentException();
-        }
-    }
-
-    public void saveAllUsers(List<User> users) {
-        userRepository.saveAll(users);
-    }
-
-    public void saveOneUser(User user) {
-        userRepository.save(user);
-    }
-
-    public void deleteAllUsers(List<User> users) {
-        userRepository.deleteAll(users);
-    }
-
-    public void deleteUser(User user) {
-        userRepository.delete(user);
+        return userRepository.findUserByName(name);
     }
 }

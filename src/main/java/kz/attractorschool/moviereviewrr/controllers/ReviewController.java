@@ -16,9 +16,14 @@ import java.util.List;
 public class ReviewController {
     private final ReviewService reviewService;
 
-    @GetMapping("/getAllReviewsForOneMovie")
-    public List<Review> getAllReviewsForOneMovie(@RequestParam("movieName") String movieName) {
+    @GetMapping("/getReviewsForOneMovie")
+    public List<Review> getReviewsForOneMovie(@RequestParam("movieName") String movieName) {
         return reviewService.findReviewsForOneMovie(movieName);
+    }
+
+    @GetMapping("getAllForMovie")
+    private List<Review> getAllForMovie(@RequestParam("movieName") String movieName) {
+        return reviewService.findAllReviewsForMovie(movieName);
     }
 
     @GetMapping("/getReviewByUser")
@@ -26,17 +31,9 @@ public class ReviewController {
         return reviewService.findReviewsByReviewer(userId);
     }
 
-    @GetMapping("/getReviewByMovie")
-    private List<Review> getReviewByMovie(@RequestParam("movieId") String movieId){
-        return reviewService.findReviewsByMovie(movieId);
-    }
-
     @GetMapping("/getReviewByMovieAndUser")
-    private Review getReviewByMovie(@RequestParam("userId") String userId, @RequestParam("movieId") String movieId){
-        Review review = reviewService.findIsThereReviewForMovie(userId, movieId);
-        if (review == null) {
-            throw new IllegalArgumentException();
-        }
-        return review;
+    private boolean getReviewByMovie(@RequestParam("userId") String userId, @RequestParam("movieId") String movieId){
+        return reviewService.findIsThereReviewForMovie(userId, movieId);
+
     }
 }

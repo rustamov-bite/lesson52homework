@@ -3,6 +3,7 @@ package kz.attractorschool.moviereviewrr.controllers;
 import kz.attractorschool.moviereviewrr.model.Movie;
 import kz.attractorschool.moviereviewrr.service.MovieService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,7 +18,7 @@ public class MovieController {
     private final MovieService movieService;
 
     @GetMapping("/getMovieByName")
-    private List<Movie> getMovieByName(@RequestParam("movieTitle") String movieTitle) {
+    private Movie getMovieByName(@RequestParam("movieTitle") String movieTitle) {
         return movieService.findByName(movieTitle);
     }
 
@@ -34,5 +35,15 @@ public class MovieController {
     @GetMapping("/getMovieByRating")
     private List<Movie> getMovieByRating(@RequestParam("movieRating") String movieRating) {
         return movieService.findByStar(Integer.parseInt(movieRating));
+    }
+
+    @GetMapping("/getPagedMovieSortedByName")
+    private Page<Movie> getPagedMovieSortedByName() {
+        return movieService.sortByName();
+    }
+
+    @GetMapping("/getPagedMovieSortedByRating")
+    private Page<Movie> getPagedMovieSortedByRating() {
+        return movieService.sortingByRating();
     }
 }
